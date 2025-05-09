@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD live-server --port=3000
+CMD live-server --port=3000 .

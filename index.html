@@ -11,60 +11,39 @@
     <title>Chess Puzzle Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="src/style.css" />
   </head>
   <body class="flex justify-center">
     <div class="flex flex-col">
       <div class="flex gap-x-4">
         <fieldset
-          class="fieldset bg-base-200 border-base-300 rounded-box w-md border p-4"
+          class="fieldset gap-y-4 bg-base-200 border-base-300 rounded-box w-md border p-4"
         >
           <legend class="fieldset-legend">Settings</legend>
 
           <label class="label">Board</label>
-          <select class="select w-full">
-            <option disabled selected>Pick a theme</option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
+          <select id="board-select" class="select w-full"></select>
 
           <label class="label">Pieces</label>
-          <select class="select w-full">
-            <option disabled selected>Pick a theme</option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
-
-          <label class="label">Size</label>
-          <div class="w-full max-w-xs">
-            <input type="range" max="3" value="3" class="range" />
-            <div class="flex justify-between px-2.5 mt-2 text-xs">
-              <span>0</span>
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-            </div>
-          </div>
+          <select id="pieces-select" class="select w-full"></select>
 
           <label class="label">Type</label>
-          <select class="select w-full">
-            <option disabled selected>Pick a type</option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
+          <select id="type-select" class="select w-full"></select>
 
           <label class="label">Difficulty</label>
-          <div class="w-full max-w-xs">
-            <input type="range" max="4" value="2" class="range" />
+          <div class="w-full">
+            <input
+              id="difficulty-range"
+              type="range"
+              max="4"
+              value="2"
+              class="range w-full ml-4 pr-9"
+            />
             <div class="flex justify-between px-2.5 mt-2 text-xs">
-              <span>easiest</span>
-              <span>easier</span>
-              <span>normal</span>
-              <span>harder</span>
-              <span>hardest</span>
+              <span>Easiest</span>
+              <span>Easier</span>
+              <span>Normal</span>
+              <span>Harder</span>
+              <span>Hardest</span>
             </div>
           </div>
         </fieldset>
@@ -72,33 +51,36 @@
         <fieldset
           class="fieldset bg-base-200 border-base-300 rounded-box w-md border p-4"
         >
-          <legend class="fieldset-legend">Board</legend>
+          <legend class="fieldset-legend">Puzzle</legend>
 
-          <img
-            src="https://www.chess.com/dynboard?fen=8/R4pk1/4pbp1/3p4/3P1P2/4Q1Pp/7K/3q4%20b%20-%20-%203%2047&board=dark_wood&piece=neo&size=3&flip=true"
-          />
+          <img id="puzzle-img" class="drop-shadow-lg/25" />
           <label class="label">Solution</label>
           <div class="join">
-            <input type="text" class="input join-item w-full" />
+            <input
+              id="solution-text"
+              type="text"
+              class="input join-item w-full outline-none"
+              readonly
+            />
             <button class="btn join-item">Copy</button>
           </div>
         </fieldset>
       </div>
 
-      <div class="flex">
+      <!-- <div class="flex">
         <fieldset
           class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4"
         >
           <legend class="fieldset-legend">Template</legend>
           <textarea class="textarea w-full">%image%</textarea>
         </fieldset>
-      </div>
+      </div> -->
       <div class="flex flex-col gap-2 py-2">
-        <button class="btn btn-neutral">Generate</button>
-        <button class="btn btn-neutral">Copy to clipboard</button>
+        <button id="generate-btn" class="btn btn-neutral">Generate</button>
+        <!-- <button class="btn btn-neutral">Copy to clipboard</button> -->
       </div>
     </div>
 
-    <script src="src/main.js" type="module"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>
