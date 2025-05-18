@@ -21,13 +21,13 @@
           <legend class="fieldset-legend">Settings</legend>
 
           <label class="label">Board</label>
-          <select id="board-select" class="select w-full"></select>
+          <select id="board-select" class="select w-full focus:outline-hidden"></select>
 
           <label class="label">Pieces</label>
-          <select id="pieces-select" class="select w-full"></select>
+          <select id="pieces-select" class="select w-full focus:outline-hidden"></select>
 
           <label class="label">Type</label>
-          <select id="type-select" class="select w-full"></select>
+          <select id="type-select" class="select w-full focus:outline-hidden"></select>
 
           <label class="label">Difficulty</label>
           <div class="w-full">
@@ -54,30 +54,16 @@
           <legend class="fieldset-legend">Puzzle</legend>
 
           <img id="puzzle-img" class="drop-shadow-lg/25" />
+
+          <div id="turn-text" class="flex justify-center text-lg"></div>
+
           <label class="label">Solution</label>
-          <div class="join">
-            <input
-              id="solution-text"
-              type="text"
-              class="input join-item w-full outline-none"
-              readonly
-            />
-            <button class="btn join-item">Copy</button>
-          </div>
+          <input id="solution-text" class="input w-full focus:outline-hidden" type="text" readonly />
         </fieldset>
       </div>
 
-      <!-- <div class="flex">
-        <fieldset
-          class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4"
-        >
-          <legend class="fieldset-legend">Template</legend>
-          <textarea class="textarea w-full">%image%</textarea>
-        </fieldset>
-      </div> -->
       <div class="flex flex-col gap-2 py-2">
         <button id="generate-btn" class="btn btn-neutral">Generate</button>
-        <!-- <button class="btn btn-neutral">Copy to clipboard</button> -->
       </div>
     </div>
 

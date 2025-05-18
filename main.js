@@ -1,13 +1,21 @@
+import {
+  BLACK,
+  Chess,
+  DEFAULT_POSITION,
+  WHITE,
+} from "https://cdn.skypack.dev/chess.js";
 import { BOARDS } from "./src/boards.js";
 import { PIECES } from "./src/pieces.js";
 import { TYPES } from "./src/types.js";
-import { Chess, DEFAULT_POSITION } from "https://cdn.skypack.dev/chess.js";
 
 const DIFFULTIES = ["easiest", "easier", "normal", "harder", "hardest"];
 const DEFAULT_SIZE = 3;
 const PUZZLE_API_URL = "https://lichess.org/api/puzzle/next?";
 const DYNBOARD_API_URL = "https://www.chess.com/dynboard?";
+const TURNS = { w: "White to move!", b: "Black to move!" };
+
 let CURRENT_FEN = DEFAULT_POSITION;
+let CURRENT_TURN;
 
 const board = document.getElementById("board-select");
 const pieces = document.getElementById("pieces-select");
@@ -15,45 +23,42 @@ const type = document.getElementById("type-select");
 const difficulty = document.getElementById("difficulty-range");
 const generate = document.getElementById("generate-btn");
 const puzzle = document.getElementById("puzzle-img");
+const turn = document.getElementById("turn-text");
 const solution = document.getElementById("solution-text");
 
-BOARDS.forEach((b) => board.appendChild(new Option(b, b)));
-PIECES.forEach((p) => pieces.appendChild(new Option(p, p)));
-TYPES.forEach((t) => type.appendChild(new Option(t.name, t.name)));
+const fill = (select, arr) =>
+  arr.forEach((x) =>
+    select.appendChild(new Option(x.text, x.value, false, x.default))
+  );
 
-const url = (params) =>
-  PUZZLE_API_URL +
-  Object.keys(params)
-    .reduce((result, key) => {
-      result.push(
-        encodeURIComponent(key) + "=" + encodeURIComponent(params[key])
-      );
-      return result;
-    }, [])
-    .join("&");
+fill(board, BOARDS);
+fill(pieces, PIECES);
+fill(type, TYPES);
 
-const PGNtoFEN = (pgn) => {
-  const game = new Chess();
-  pgn.forEach((m) => game.move(m));
-  return game.fen();
-};
-
-const setBoard = (fen) => {
-  puzzle.src =
-    DYNBOARD_API_URL +
-    new URLSearchParams({
-      fen,
-      board: board.value,
-      piece: pieces.value,
-      size: DEFAULT_SIZE,
-      coordinates: true,
-    });
+const updateBoard = (fen, flip) => {
+  var params = {
+    fen,
+    board: board.value,
+    piece: pieces.value,
+    size: DEFAULT_SIZE,
+    coordinates: true,
+  };
+  if (flip) {
+    params.flip = true;
+  }
+  puzzle.src = DYNBOARD_API_URL + new URLSearchParams(params);
+  turn.textContent = TURNS[CURRENT_TURN];
 };
 
 const updatePuzzle = (json) => {
   const pgn = json.game.pgn.split(" ");
-  CURRENT_FEN = PGNtoFEN(pgn);
-  setBoard(CURRENT_FEN);
+
+  const game = new Chess();
+  pgn.forEach((m) => game.move(m));
+
+  CURRENT_FEN = game.fen();
+  CURRENT_TURN = game.turn();
+  updateBoard(CURRENT_FEN, CURRENT_TURN == BLACK);
   solution.value = json.puzzle.solution.join(" ");
 };
 
@@ -69,7 +74,7 @@ const nextPuzzle = () =>
     .then(updatePuzzle);
 
 generate.addEventListener("click", nextPuzzle);
-board.addEventListener("change", () => setBoard(CURRENT_FEN));
-pieces.addEventListener("change", () => setBoard(CURRENT_FEN));
+board.addEventListener("change", () => updateBoard(CURRENT_FEN));
+pieces.addEventListener("change", () => updateBoard(CURRENT_FEN));
 
-setBoard(CURRENT_FEN);
+updateBoard(CURRENT_FEN);
